@@ -34,6 +34,7 @@ var myApp = {
                   tplData.friends.push({
                     id: val.id,
                     username: val.firstName + " " + val.lastName,
+                    firstName: val.firstName,
                     photo: val.photo.prefix + "50x50" + val.photo.suffix,
                     phone: val.contact.phone
                   });
@@ -54,7 +55,7 @@ var myApp = {
               $('#friends').html(html);
               $('#friends .create').click(function(event) {
                 event.preventDefault();
-                myApp.createMeetup1();
+                myApp.sendMessages();
               });
 
           },
@@ -90,7 +91,7 @@ var myApp = {
                 tplData.venues.push({
                   id: val.venue.id,
                   name: val.venue.name,
-                  url: val.venue.canonicalUrl
+                  url: val.venue.shortUrl
                 });
               });
  
@@ -109,20 +110,38 @@ var myApp = {
     },    
 
     sendMessages: function() {
+        var venue_id = $('input.venue_id:checked', '#venues_form').val();
+
+        var friends = [];
+        var numbers = [];
+        var friendsData = $('#friends_form input.user_id:checked');
+
+         
+        console.log(friendsData);
+        $.each(friendsData, function(key, row) {
+          var id = $(row).val();
+          friends.push($('#username_'+id).val());
+          numbers.push($('#userphone_'+id).val());
+        });
+
+        var myData = {
+              friends : friends,
+              numbers : numbers,
+              venue_url : $('#venue_url_'+venue_id).val(),
+              venue_name : $('#venue_name_'+venue_id).val(),
+            };
+        console.log(friends);
+        console.log(myData);
 
         $.ajax({
             url: '/sms.php',
-            data: {
-              oauth_token : auth_token,
-              v : v
-            },  
+            data: myData,  
             type: 'POST',
-            crossDomain: true,
+            crossDomain: false,
             dataType: 'jsonp',
             success: function(data) {
-            
-
-          },
+              console.log(data);
+            },
             error: function() { alert('Failed!'); }
         });
 

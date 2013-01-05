@@ -34,7 +34,9 @@
           <img src="{{photo}}" />
           <div class="right">
             <label for="venue_{{id}}">
-              <input type="radio" value="{{id}}" name="venue_id[]" id="venue_{{id}}" />
+              <input type="radio" value="{{id}}" name="venue_id[]" class="venue_id" id="venue_{{id}}" />
+              <input type="hidden" value="{{name}}" name="venue_name[]" id="venue_name_{{id}}" />
+              <input type="hidden" value="{{url}}" name="venue_url[]" id="venue_url_{{id}}" />
               {{name}}
             </label>
           </div>
@@ -58,7 +60,10 @@
           <img src="{{photo}}" />
           <div class="right">
             <label for="user_{{id}}">
-              <input type="checkbox" value="{{phone}}" name="user_id[]" id="user_{{id}}" />
+              <input type="checkbox" value="{{id}}" name="user_id[]" class="user_id" id="user_{{id}}" />
+              <input type="hidden" value="{{phone}}" name="user_phone[]" id="userphone_{{id}}" />
+              <?php /* <input type="hidden" value="+16467251124" name="user_phone[]" id="userphone_{{id}}" /> */ ?>
+              <input type="hidden" value="{{firstName}}" name="username[]" id="username_{{id}}" />
               {{username}}
               ({{phone}})
             </label>
