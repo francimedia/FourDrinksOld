@@ -52,7 +52,7 @@ var myApp = {
           
               var html    = template(tplData);
               
-              $('#friends').html(html);
+              $('#friends').html(html).trigger('create');
               $('#friends .create').click(function(event) {
                 event.preventDefault();
                 myApp.sendMessages();
@@ -100,7 +100,13 @@ var myApp = {
           
               var html    = template(tplData);
               
-              $('#venues').html(html);
+              $('#venues').html(html).trigger('create');
+
+              $('#venues a').click(function(event) {
+                $('#step1').fadeOut(100, function() {
+                  $('#step2').fadeIn();
+                });
+              });
 
           },
             error: function() { alert('Failed!'); }
