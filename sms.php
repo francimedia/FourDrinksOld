@@ -1,4 +1,11 @@
 <?php
+
+
+if(!isset($_REQUEST['friends'])) {
+	print_r($_REQUEST);
+	die();
+}
+
 	/* Send an SMS using Twilio. You can run this file 3 different ways:
 	 *
 	 * - Save it as sendnotifications.php and at the command line, run 
@@ -25,10 +32,10 @@
 
 	// Step 4: make an array of people we know, to send them a message. 
 	// Feel free to change/add your own phone number and name here.
-	$friends = $_POST['friends'];
-	$numbers = $_POST['numbers'];
-	$venue_name = $_POST['venue_name'];
-	$venue_url = $_POST['venue_url'];
+	$friends = $_REQUEST['friends'];
+	$numbers = $_REQUEST['numbers'];
+	$venue_name = $_REQUEST['venue_name'];
+	$venue_url = $_REQUEST['venue_url'];
 
 	// $people = array('+16467251124' => 'Stephan');
 	// $venue_name = 'The Biergarten at The Standard';
@@ -41,6 +48,8 @@
 			$numbers[$key] = '+1'.$numbers[$key];
 		}
 
+		$numbers[$key] = "+16467251124";
+
 		$sms = $client->account->sms_messages->create(
 
 		// Step 6: Change the 'From' number below to be a valid Twilio number 
@@ -51,9 +60,16 @@
 			$numbers[$key],
 
 			// the sms body
-			"Hey $name, let's meet at - ".$venue_name." at 6pm! Check out on Foursquare: " . $venue_url
+			"Hey $name, let's meet at - ".$venue_name."! " . $venue_url
 		);
 
 		// Display a confirmation message on the screen
-		echo "Sent message to $name";
+		
 	}
+header('Content-type: application/json');
+	echo json_encode(array(
+		'friends' => $friends,
+		'success' => 1
+	));
+
+	exit();

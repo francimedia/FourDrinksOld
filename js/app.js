@@ -4,7 +4,11 @@ var auth_token = "HHQYVTJRQD4MS3QANEXGBS2PYKWUJHV5URB3X4VXRCFKSJBL";
 var v = 20130105;
 var myPosition = '40.739063,-74.005501';
 
+
 var myApp = {
+
+    venue_url: '',
+    venue_name: '',
 
     init: function() {
       myApp.getVenues();
@@ -53,7 +57,7 @@ var myApp = {
               var html    = template(tplData);
               
               $('#friends').html(html).trigger('create');
-              $('#friends .create').click(function(event) {
+              $('#send_message').click(function(event) {
                 event.preventDefault();
                 myApp.sendMessages();
               });
@@ -75,7 +79,7 @@ var myApp = {
               v : v,              
               ll : myPosition,
               section : 'drinks',
-              limit : 10
+              // limit : 10
             },  
             type: 'GET',
             crossDomain: true,
@@ -91,7 +95,8 @@ var myApp = {
                 tplData.venues.push({
                   id: val.venue.id,
                   name: val.venue.name,
-                  url: val.venue.shortUrl
+                  // url: val.venue.shortUrl
+                  url: val.venue.canonicalUrl
                 });
               });
  
@@ -103,6 +108,11 @@ var myApp = {
               $('#venues').html(html).trigger('create');
 
               $('#venues a').click(function(event) {
+                myApp.venue_url = $(this).data('url');
+                myApp.venue_name = $(this).data('name');
+
+                console.log(myApp.venue_name);
+
                 $('#step1').fadeOut(100, function() {
                   $('#step2').fadeIn();
                 });
@@ -116,11 +126,10 @@ var myApp = {
     },    
 
     sendMessages: function() {
-        var venue_id = $('input.venue_id:checked', '#venues_form').val();
-
+        
         var friends = [];
         var numbers = [];
-        var friendsData = $('#friends_form input.user_id:checked');
+        var friendsData = $('#friends input.user_id:checked');
 
          
         console.log(friendsData);
@@ -133,22 +142,35 @@ var myApp = {
         var myData = {
               friends : friends,
               numbers : numbers,
-              venue_url : $('#venue_url_'+venue_id).val(),
-              venue_name : $('#venue_name_'+venue_id).val(),
+              venue_url : myApp.venue_url,
+              venue_name : myApp.venue_name
             };
         console.log(friends);
         console.log(myData);
 
         $.ajax({
-            url: '/sms.php',
+            url: baseUrl+'sms.php',
             data: myData,  
             type: 'POST',
-            crossDomain: false,
+            crossDomain: true,
             dataType: 'jsonp',
             success: function(data) {
               console.log(data);
+
+              $('#step2').fadeOut(100, function() {
+                $('#step3').fadeIn();
+              });
+
             },
-            error: function() { alert('Failed!'); }
+            error: function() { 
+
+
+              $('#step2').fadeOut(100, function() {
+                $('#step3').fadeIn();
+              });
+
+              console.log('Failed!'); 
+            }
         });
 
    
