@@ -39,7 +39,7 @@ var myApp = {
             crossDomain: true,
             dataType: 'jsonp',
             success: function(data) {
-              
+              alert(data);
               var tplData = {};
               tplData.friends = [];
 
