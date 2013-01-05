@@ -14,6 +14,7 @@ var myApp = {
       if(typeof auth_token != 'undefined') {
         $('#login').hide();
         $('#step1').show();
+        $('#step2').show();
         $.geolocation.get({win: myApp.locationSuccessCallback, fail: myApp.locationErrorCallback});
       }
     },
@@ -38,9 +39,7 @@ var myApp = {
             crossDomain: true,
             dataType: 'jsonp',
             success: function(data) {
-              console.log('friends');
-              console.log(data);
-
+              
               var tplData = {};
               tplData.friends = [];
 
