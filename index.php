@@ -1,8 +1,8 @@
 <!doctype html>
 <head>
   <meta charset="utf-8">
-  <title>My Parse App</title>
-  <meta name="description" content="My Parse App">
+  <title>Let's get drinks</title>
+  <meta name="description" content="Let's get drinks">
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/styles.css">
@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
   <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
   <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+  <script src="./js/jquery.geolocation.js"></script>
   <script type="text/javascript" src="./js/handlebars-1.0.rc.1.js"></script>
   <script type="text/javascript" src="./js/app.js"></script>
 
@@ -23,10 +24,23 @@
   <div data-role="page">
 
   <div data-role="header">
-    <h1>Let's have drinks</h1>
+    <h1>
+      <img src="./images/beer-vector.png" style="height: 60px; margin-right: 10px" />
+      Let's get drinks</h1>
   </div><!-- /header -->
 
   <div data-role="content"> 
+
+    
+    <div id="login">
+      <h2>Please log in</h2>
+      <p>
+        Select a location nearby and invite friends to get drinks
+      </p>
+      <a href="https://foursquare.com/oauth2/authenticate?client_id=DVPR0U2DZMCFP2Q3H1ETHJTFAQAHCSD5BMK51GG1QLPN2EHV&response_type=token&redirect_uri=http://<?php echo $_SERVER['HTTP_HOST']; ?>/">
+        <img src="https://playfoursquare.s3.amazonaws.com/press/logo/connect-blue.png" />
+      </a>
+    </div> 
     
     <div id="step1">
       <h2>1. Select a venue</h2>
@@ -54,7 +68,7 @@
     <div id="step3">
       <h2>3. Order drinks!</h2>
 
-       <p>Let's party!</p>
+       <p style="text-align: center"><img src="./images/beer-vector.png" style="height: 260px;" /></p>
 
     </div>    
 

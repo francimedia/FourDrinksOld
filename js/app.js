@@ -1,6 +1,4 @@
-var foursquareId = ""+108894512;
-var foursquareFriendId = ""+108894513;
-var auth_token = "HHQYVTJRQD4MS3QANEXGBS2PYKWUJHV5URB3X4VXRCFKSJBL";
+var auth_token = 1;
 var v = 20130105;
 var myPosition = '40.739063,-74.005501';
 
@@ -11,8 +9,23 @@ var myApp = {
     venue_name: '',
 
     init: function() {
-      myApp.getVenues();
+
+      auth_token = myApp.getAccessToken();
+
+      if(auth_token != 1) {
+        $('#login').hide();
+        $('#step1').show();
+        $.geolocation.get({win: myApp.locationSuccessCallback, fail: myApp.locationErrorCallback});
+      }
+    },
+
+    locationSuccessCallback: function(position) {
+      myApp.getVenues(position.coords.latitude, position.coords.longitude);
       myApp.getFriends();
+    },
+
+    locationErrorCallback: function(error) {
+      alert("No location info available. Error code: " + error.code);
     },
 
     getFriends: function() {
@@ -70,14 +83,14 @@ var myApp = {
     },
 
 
-    getVenues: function() {
+    getVenues: function(latitude,longitude) {
 
         $.ajax({
             url: myApp.getApiUrl('venues/explore'),
             data: {
               oauth_token : auth_token,
               v : v,              
-              ll : myPosition,
+              ll : latitude+','+longitude,
               section : 'drinks',
               // limit : 10
             },  
@@ -180,11 +193,24 @@ var myApp = {
       return 'https://api.foursquare.com/v2/' + args;
     },
 
-    getAccessToken: function() {
-      return auth_token;
-    }
+  getAccessToken: function() {
+    return myApp.getQueryVariable('access_token');
+  },
+
+  getQueryVariable: function(variable) { 
+      var query = window.location.hash.substring(1);
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+          var pair = vars[i].split('=');
+          if (decodeURIComponent(pair[0]) == variable) {
+              return decodeURIComponent(pair[1]);
+          }
+      }
+      console.log('Query variable %s not found', variable);
+  }
    
 };
 
-
-myApp.init();
+$(function() {
+  myApp.init();
+});
