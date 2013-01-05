@@ -12,7 +12,7 @@ var myApp = {
 
       auth_token = myApp.getAccessToken();
 
-      if(auth_token != 1) {
+      if(typeof auth_token != 'undefined') {
         $('#login').hide();
         $('#step1').show();
         $.geolocation.get({win: myApp.locationSuccessCallback, fail: myApp.locationErrorCallback});
@@ -73,6 +73,14 @@ var myApp = {
               $('#send_message').click(function(event) {
                 event.preventDefault();
                 myApp.sendMessages();
+              });
+              
+              $('#go_back').click(function(event) {
+                event.preventDefault();
+
+                $('#step2').fadeOut(100, function() {
+                  $('#step1').fadeIn();
+                });
               });
 
           },
