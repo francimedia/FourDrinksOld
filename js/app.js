@@ -1,5 +1,4 @@
 var auth_token = 1;
-var v = 20130105;
 var myPosition = '40.739063,-74.005501';
 
 
@@ -33,8 +32,7 @@ var myApp = {
         $.ajax({
             url: myApp.getApiUrl('users/self/friends'),
             data: {
-              oauth_token : auth_token,
-              v : v
+              oauth_token : auth_token
             },  
             type: 'GET',
             crossDomain: true,
@@ -52,7 +50,8 @@ var myApp = {
                     id: val.id,
                     username: val.firstName + " " + val.lastName,
                     firstName: val.firstName,
-                    photo: val.photo.prefix + "50x50" + val.photo.suffix,
+                    // photo: val.photo.prefix + "50x50" + val.photo.suffix,
+                    photo: val.photo,
                     phone: val.contact.phone
                   });
                 }
@@ -97,7 +96,6 @@ var myApp = {
             url: myApp.getApiUrl('venues/explore'),
             data: {
               oauth_token : auth_token,
-              v : v,              
               ll : latitude+','+longitude,
               section : 'drinks',
               // limit : 10

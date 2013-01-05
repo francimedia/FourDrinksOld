@@ -99,7 +99,7 @@
     {{#each friends}}
     <label>
         <input type="checkbox" value="{{id}}" name="user_id[]" class="user_id" id="user_{{id}}" />
-        <img src="{{photo}}" />
+        <img src="{{photo}}" style="height: 35px; margin-right: 10px" />
         {{username}}
         <input type="hidden" value="{{phone}}" name="user_phone[]" id="userphone_{{id}}" />
         <input type="hidden" value="{{firstName}}" name="username[]" id="username_{{id}}" />
