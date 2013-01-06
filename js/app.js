@@ -15,17 +15,20 @@ var myApp = {
         $('#login').hide();
         $('#step1').show();
         $('#step2').show();
+
+
         $.geolocation.get({win: myApp.locationSuccessCallback, fail: myApp.locationErrorCallback});
       }
     },
 
     locationSuccessCallback: function(position) {
       myApp.getVenues(position.coords.latitude, position.coords.longitude);
-      myApp.getFriends();
     },
 
     locationErrorCallback: function(error) {
-      alert("No location info available. Error code: " + error.code);
+      myApp.getFriends();
+      // alert("No location info available. Error code: " + error.code);
+      myApp.getVenues('40.739063', '-74.005501');
     },
 
     getFriends: function() {
@@ -135,6 +138,8 @@ var myApp = {
                   $('#step2').fadeIn();
                 });
               });
+
+              myApp.getFriends();
 
           },
             error: function() { alert('Failed!'); }
