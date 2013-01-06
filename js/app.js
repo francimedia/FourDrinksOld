@@ -39,12 +39,12 @@ var myApp = {
             crossDomain: true,
             dataType: 'jsonp',
             success: function(data) {
-              alert(data);
+              console.log(data);
               var tplData = {};
               tplData.friends = [];
 
               $.each(data.response.friends.items, function(key, val) {
-                if(typeof val.contact.phone != 'undefined') {
+                if(val.contact.phone != null) {
                   tplData.friends.push({
                     id: val.id,
                     username: val.firstName + " " + val.lastName,
