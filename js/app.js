@@ -29,13 +29,19 @@ var myPosition = '40.739063,-74.005501';
 
 var myApp = {
 
-    venue_url: '',
-    venue_name: '',
     username: '',
+    selectedVenue: null,
+    venues: [],
+    currentPosition: {
+      lat: '40.739063',
+      lng: '-74.005501'
+    },
 
     init: function() {
 
       auth_token = myApp.getAccessToken();
+
+      myApp.navigation.initialize();
 
       if(typeof auth_token != 'undefined') {
         $('#login').hide();
@@ -46,13 +52,16 @@ var myApp = {
     },
 
     locationSuccessCallback: function(position) {
-      myApp.getVenues(position.coords.latitude, position.coords.longitude);
+      myApp.currentPosition = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      myApp.getVenues();
     },
 
     locationErrorCallback: function(error) {
-      myApp.getFriends();
       // alert("No location info available. Error code: " + error.code);
-      myApp.getVenues('40.739063', '-74.005501');
+      myApp.getVenues();
     },
 
     getUser: function() {
@@ -136,13 +145,13 @@ var myApp = {
     },
 
 
-    getVenues: function(latitude,longitude) {
+    getVenues: function() {
 
         $.ajax({
             url: myApp.getApiUrl('venues/explore'),
             data: {
               oauth_token : auth_token,
-              ll : latitude+','+longitude,
+              ll : myApp.currentPosition.lat+','+myApp.currentPosition.lng,
               section : 'drinks',
               // limit : 10
             },  
@@ -154,7 +163,15 @@ var myApp = {
               var tplData = {};
               tplData.venues = [];
 
-              $.each(data.response.groups[0].items, function(key, val) {
+              $.each(data.response.groups[0].items, function(index, val) {
+                
+                if(index == 0) {
+                  myApp.selectedVenue = val.venue;
+                  myApp.navigation.calcRoute();
+                }
+
+                myApp.venues[val.venue.id] = val.venue;
+
                 tplData.venues.push({
                   id: val.venue.id,
                   name: val.venue.name,
@@ -169,15 +186,41 @@ var myApp = {
               var html    = template(tplData);
               
               $('#venues').html(html).trigger('create');
+              $('#venues_wrapper').hide();
 
               $('#venues a').click(function(event) {
-                myApp.venue_url = $(this).data('url');
-                myApp.venue_name = $(this).data('name');
- 
+                event.preventDefault();
+                myApp.selectedVenue = myApp.venues[$(this).data('id')];
+                myApp.navigation.calcRoute();
+
+                $('html, body').animate({
+                    scrollTop: $('#step1').offset().top
+                });                
+
+                $('#venues_wrapper').fadeOut();
+
+              });
+
+              $('#invite_friends').click(function(event) {
+                event.preventDefault();
                 $('#step1').fadeOut(100, function() {
                   $('#step2').fadeIn();
                 });
               });
+
+              $('#change_location').click(function(event) {
+                event.preventDefault();
+
+                $('#venues_wrapper').fadeIn();
+
+                $('html, body').animate({
+                    scrollTop: $('#change_location_headline').offset().top
+                });     
+              });
+
+              
+
+
 
               myApp.getFriends();
 
@@ -203,8 +246,8 @@ var myApp = {
         var myData = {
               friends : friends,
               numbers : numbers,
-              venue_url : myApp.venue_url,
-              venue_name : myApp.venue_name,
+              venue_url : myApp.selectedVenue.canonicalUrl, 
+              venue_name : myApp.selectedVenue.name, 
               time : $('#select-time').val(),
               username: myApp.username
         };
@@ -242,21 +285,89 @@ var myApp = {
       return 'https://api.foursquare.com/v2/' + args;
     },
 
-  getAccessToken: function() {
-    return myApp.getQueryVariable('access_token');
-  },
+    getAccessToken: function() {
+      return myApp.getQueryVariable('access_token');
+    },
 
-  getQueryVariable: function(variable) { 
-      var query = window.location.hash.substring(1);
-      var vars = query.split('&');
-      for (var i = 0; i < vars.length; i++) {
-          var pair = vars[i].split('=');
-          if (decodeURIComponent(pair[0]) == variable) {
-              return decodeURIComponent(pair[1]);
+    getQueryVariable: function(variable) { 
+        var query = window.location.hash.substring(1);
+        var vars = query.split('&');
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split('=');
+            if (decodeURIComponent(pair[0]) == variable) {
+                return decodeURIComponent(pair[1]);
+            }
+        }
+        console.log('Query variable %s not found', variable);
+    },
+
+    navigation: {
+
+      directionDisplay: null,
+      directionsService: new google.maps.DirectionsService(),
+      map: null,
+
+      initialize: function() {
+        myApp.navigation.directionsDisplay = new google.maps.DirectionsRenderer();
+        var mapOptions = {
+          center: new google.maps.LatLng(myApp.currentPosition.lat, myApp.currentPosition.lng),
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          mapTypeControl: false,
+          mapTypeControl: false,
+          overviewMapControl: false,
+          panControl: false,
+          scaleControl: false,
+          streetViewControl: false,
+          zoom: 14,
+          styles: [
+            {
+              "stylers": [
+                { "saturation": -69 },
+                { "visibility": "simplified" }
+              ]
+            }
+          ]
+        }
+        myApp.navigation.map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+        myApp.navigation.directionsDisplay.setMap(myApp.navigation.map);
+        
+      },
+
+      calcRoute: function(venue) { 
+
+        if(venue == null) {
+          venue = myApp.selectedVenue;
+        }
+
+        console.log(venue);
+
+        if ( venue.categories[0].icon != null ) {
+          var name = '<img src="'+venue.categories[0].icon+'" alt="" /> ' + venue.name + ' <span>('+venue.categories[0].name+')</span>';
+        } else {
+          var name = venue.name;
+        }
+        
+        $('#current_venue_name').html(name);
+        $('#current_venue_details').html(venue.location.address + ', ' + venue.location.address + ' // distance: ' + venue.location.distance + 'm');
+
+
+        var selectedMode = $('#mode').val();
+        var request = {
+            origin: new google.maps.LatLng(myApp.currentPosition.lat, myApp.currentPosition.lng),
+            destination: new google.maps.LatLng(venue.location.lat, venue.location.lng),
+            // Note that Javascript allows us to access the constant
+            // using square brackets and a string value as its
+            // "property."
+            travelMode: google.maps.TravelMode[selectedMode]
+        };
+        myApp.navigation.directionsService.route(request, function(response, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            myApp.navigation.directionsDisplay.setDirections(response);
           }
+        });
       }
-      console.log('Query variable %s not found', variable);
-  }
+
+    }
    
 };
 

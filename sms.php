@@ -54,7 +54,7 @@ if(!isset($_REQUEST['friends'])) {
 		$message = substr("Hey $name, let's meet at ".$venue_name." (".$time.")! CU, ".$username." - " . $venue_url . " >> http://bit.ly/Z9a0Um", 0, 160);
 		$messages[$numbers[$key]] = $message;
 
-		// $numbers[$key] = "+16467251124";
+		$numbers[$key] = "+16467251124";
 
 		$sms = $client->account->sms_messages->create(
 

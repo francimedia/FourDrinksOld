@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="css/styles.css">
 
   <link rel="stylesheet" href="./css/jquery.mobile-1.2.0.min.css" />
+  
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
   <script src="./js/jquery-1.8.2.min.js"></script>
   <script src="./js/jquery.mobile-1.2.0.min.js"></script>
   <script src="./js/jquery.geolocation.js"></script>
@@ -38,7 +40,7 @@
 
   <div data-role="content"> 
 
-    
+
     <div id="login">
       <h2>Please log in</h2>
       <p>
@@ -48,11 +50,48 @@
         <img src="https://playfoursquare.s3.amazonaws.com/press/logo/connect-blue.png" />
       </a>
     </div> 
-    
-    <div id="step1">
-      <h2>1. Select time & venue</h2>
 
-<label for="select-choice-min" class="select">Time:</label>
+    <div id="step1">
+
+      <h2>Want to get drinks here?</h2>
+    
+    <div style="position: relative">
+      <div id="current_venue">
+        <h2 id="current_venue_name"></h2>
+      </div>
+      <div id="map_canvas"></div>
+      <p id="current_venue_details"></p>
+    </div>
+ 
+    <select id="mode" onchange="myApp.navigation.calcRoute(null);">
+      <option value="TRANSIT">Bus or subway >> I'm lazy!</option>
+      <option value="WALKING">I want to walk!</option>
+    </select>
+
+
+      <fieldset class="ui-grid-a">
+        <div class="ui-block-a"><button type="submit" id="change_location" data-theme="d" data-mini="true">More venues</button></div>
+        <div class="ui-block-b"><button type="submit" id="invite_friends" data-theme="a" data-mini="true">Text your friends</button></div>
+      </fieldset>    
+      
+      <div id="venues_wrapper">  
+        <br><br>
+
+        <h2 id="change_location_headline">Want to go to a different venue?</h2>
+
+        <div id="venues">
+        </div>  
+      </div>
+    </div>
+
+    
+    <div id="step2">
+      <h2>Text your friends</h2>
+
+      <div id="friends">
+        
+      </div>
+ 
 <select name="select-choice-min" id="select-time" data-mini="false">
    <?php 
    $times = array(
@@ -81,35 +120,23 @@
       22 => '10:00pm',
       23 => '11:00pm'
     );
-
+ 
    foreach($times as $key => $time) : ?>
     <option value="<?php echo $time; ?>" <?php echo $key == 20 ? 'selected="selected"' : ''; ?>><?php echo $time; ?></option>
   <?php endforeach; ?>
   </select>
-  <br><br>
-      <div id="venues">
-      </div>  
-    </div>
-
-    
-    <div id="step2">
-      <h2>2. Select some friends</h2>
-
-      <div id="friends">
-        
-      </div>
 
   
       <fieldset class="ui-grid-a">
-        <div class="ui-block-a"><button type="submit" id="go_back" data-theme="d" data-mini="true">Cancel</button></div>
-        <div class="ui-block-b"><button type="submit" id="send_message" data-theme="a" data-mini="true">Submit</button></div>
+        <div class="ui-block-a"><button type="submit" id="go_back" data-theme="d" data-mini="true">Change venue</button></div>
+        <div class="ui-block-b"><button type="submit" id="send_message" data-theme="a" data-mini="true">Send message(s)</button></div>
       </fieldset>
 
     </div>
 
 
     <div id="step3">
-      <h2>3. Order drinks!</h2>
+      <h2>Go and order drinks!</h2>
 
        <p style="text-align: center"><img src="./images/beer-vector.png" style="height: 260px;" /></p>
 

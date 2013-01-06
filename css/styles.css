@@ -60,12 +60,32 @@ body {
 }
 
 
-
+#current_venue_name span {
+    font-size: 12px;
+    color: #aaa;
+}
 
 .friends li input {
     float: right;
     margin-left: 10px;
 }
+
+#map_canvas {
+  height: 300px;
+}
+
+#current_venue {
+    position: absolute;
+width: 95%;
+background: white;
+z-index: 1000;
+font-size: 12px;
+text-align: left;
+padding-left: 20px;
+opacity: 0.8;
+right: 0;
+}
+
 
 .clearfix:after {
     content: ".";
@@ -88,6 +108,6 @@ html[xmlns] .clearfix {
     height: 1%;
 }
 
-#step1, #step2, #step3 {
+#step1, #step2, #step3, #venues_wrapper {
     display: none;
 }
