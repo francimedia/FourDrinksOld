@@ -197,7 +197,7 @@ var myApp = {
                     scrollTop: $('#step1').offset().top
                 });                
 
-                $('#venues_wrapper').fadeOut();
+                $('#venues_wrapper').hide();
 
               });
 
@@ -211,7 +211,7 @@ var myApp = {
               $('#change_location').click(function(event) {
                 event.preventDefault();
 
-                $('#venues_wrapper').fadeIn();
+                $('#venues_wrapper').show();
 
                 $('html, body').animate({
                     scrollTop: $('#change_location_headline').offset().top
