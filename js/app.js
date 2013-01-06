@@ -203,6 +203,11 @@ var myApp = {
 
               $('#invite_friends').click(function(event) {
                 event.preventDefault();
+
+                $('html, body').animate({
+                    scrollTop: $('#step1').offset().top
+                });   
+
                 $('#step1').fadeOut(100, function() {
                   $('#step2').fadeIn();
                 });
