@@ -7,9 +7,9 @@
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/styles.css">
 
-  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+  <link rel="stylesheet" href="./css/jquery.mobile-1.2.0.min.css" />
   <script src="https://code.jquery.com/jquery-1.8.2.min.js"></script>
-  <script src="https://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+  <script src="./js/jquery.mobile-1.2.0.min.js"></script>
   <script src="./js/jquery.geolocation.js"></script>
   <script type="text/javascript" src="./js/handlebars-1.0.rc.1.js"></script>
   <script type="text/javascript" src="./js/app.js"></script>
