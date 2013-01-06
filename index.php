@@ -16,6 +16,7 @@
 
   <script type="text/javascript">
     var baseUrl = '//<?php echo $_SERVER['HTTP_HOST']; ?>/';
+    var v = '<?php echo date('Ymd'); ?>';
   </script>
 
   <style type="text/css">

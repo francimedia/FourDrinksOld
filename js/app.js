@@ -79,7 +79,8 @@ var myApp = {
         $.ajax({
             url: myApp.getApiUrl('users/self/friends'),
             data: {
-              oauth_token : auth_token
+              oauth_token : auth_token,
+              v : v
             },  
             type: 'GET',
             crossDomain: true,
@@ -95,8 +96,8 @@ var myApp = {
                     id: val.id,
                     username: val.firstName + " " + val.lastName,
                     firstName: val.firstName,
-                    // photo: val.photo.prefix + "50x50" + val.photo.suffix,
-                    photo: val.photo,
+                    photo: val.photo.prefix + "50x50" + val.photo.suffix,
+                    // photo: val.photo,
                     phone: val.contact.phone
                   });
                 }
