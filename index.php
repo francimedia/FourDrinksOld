@@ -15,7 +15,7 @@
   <script type="text/javascript" src="./js/app.js"></script>
 
   <script type="text/javascript">
-    var baseUrl = 'http://<?php echo $_SERVER['HTTP_HOST']; ?>/';
+    var baseUrl = '//<?php echo $_SERVER['HTTP_HOST']; ?>/';
   </script>
 
   <style type="text/css">
