@@ -43,7 +43,7 @@
       <p>
         Select a location nearby and invite friends to get drinks
       </p>
-      <a href="https://foursquare.com/oauth2/authenticate?client_id=DVPR0U2DZMCFP2Q3H1ETHJTFAQAHCSD5BMK51GG1QLPN2EHV&response_type=token&redirect_uri=http://<?php echo $_SERVER['HTTP_HOST']; ?>/">
+      <a href="https://foursquare.com/oauth2/authenticate?client_id=DVPR0U2DZMCFP2Q3H1ETHJTFAQAHCSD5BMK51GG1QLPN2EHV&response_type=token&redirect_uri=https://<?php echo $_SERVER['HTTP_HOST']; ?>/">
         <img src="https://playfoursquare.s3.amazonaws.com/press/logo/connect-blue.png" />
       </a>
     </div> 
