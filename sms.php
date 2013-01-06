@@ -40,6 +40,7 @@ if(!isset($_REQUEST['friends'])) {
 	// $people = array('+16467251124' => 'Stephan');
 	// $venue_name = 'The Biergarten at The Standard';
 	
+	$messages = array();
 	// Step 5: Loop over all our friends. $number is a phone number above, and 
 	// $name is the name next to it
 	foreach ($friends as $key => $name) {
@@ -48,8 +49,13 @@ if(!isset($_REQUEST['friends'])) {
 			$numbers[$key] = '+1'.$numbers[$key];
 		}
 
-		$numbers[$key] = "+16467251124";
+		
 
+		$message = "Hey $name, let's meet at - ".$venue_name."! " . $venue_url;
+		$messages[$numbers[$key]] = $message;
+
+		$numbers[$key] = "+16467251124";
+		
 		$sms = $client->account->sms_messages->create(
 
 		// Step 6: Change the 'From' number below to be a valid Twilio number 
@@ -60,15 +66,19 @@ if(!isset($_REQUEST['friends'])) {
 			$numbers[$key],
 
 			// the sms body
-			"Hey $name, let's meet at - ".$venue_name."! " . $venue_url
+			$message
+			
 		);
 
 		// Display a confirmation message on the screen
 		
 	}
-header('Content-type: application/json');
+	
+	header('Content-type: application/json');
+	
 	echo json_encode(array(
 		'friends' => $friends,
+		'messages' => $messages,
 		'success' => 1
 	));
 
