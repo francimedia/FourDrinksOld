@@ -80,7 +80,7 @@
 
        Debug:
 
-       <textarea id="debug"></textarea> 
+       <textarea id="debug" style="height: 300px;"></textarea> 
 
 
     </div>    
