@@ -85,7 +85,7 @@ var myApp = {
             crossDomain: true,
             dataType: 'jsonp',
             success: function(data) {
-              console.log(data);
+              
               var tplData = {};
               tplData.friends = [];
 
@@ -149,8 +149,6 @@ var myApp = {
             crossDomain: true,
             dataType: 'jsonp',
             success: function(data) {
-              console.log('getVenues');
-              console.log(data);
 
               var tplData = {};
               tplData.venues = [];
@@ -216,8 +214,7 @@ var myApp = {
             type: 'POST',
             crossDomain: true,
             dataType: 'JSON',
-            success: function(data) {
-              console.log(data);
+            success: function(data) { 
 
               $('#step2').fadeOut(100, function() {
                 $('#step3').fadeIn();
