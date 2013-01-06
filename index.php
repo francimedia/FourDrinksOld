@@ -1,7 +1,7 @@
 <!doctype html>
 <head>
   <meta charset="utf-8">
-  <title>Let's get drinks</title>
+  <title>FourDrinks</title>
   <meta name="description" content="Let's get drinks">
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="css/reset.css">
@@ -44,7 +44,7 @@
     <div id="login">
       <h2>Please log in</h2>
       <p>
-        Select a location nearby and invite friends to get drinks
+        Select a venue nearby and invite friends via text message to get drinks
       </p>
       <a href="https://foursquare.com/oauth2/authenticate?client_id=DVPR0U2DZMCFP2Q3H1ETHJTFAQAHCSD5BMK51GG1QLPN2EHV&response_type=token&redirect_uri=https://<?php echo $_SERVER['HTTP_HOST']; ?>/">
         <img src="https://playfoursquare.s3.amazonaws.com/press/logo/connect-blue.png" />
