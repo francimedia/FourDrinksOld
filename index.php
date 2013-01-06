@@ -33,7 +33,7 @@
   <div data-role="page">
 
   <div data-role="header">
-    <h1>
+    <h1 id="title">
       <img src="./images/beer-vector.png" style="height: 60px; margin-right: 10px" />
       FourDrinks</h1>
   </div><!-- /header -->
@@ -53,26 +53,23 @@
 
     <div id="step1">
 
-      <h2>Want to get drinks here?</h2>
+      <!-- <h2>Want to get drinks here?</h2> -->
     
-    <div style="position: relative">
+    <div style="position: relative1 ">
       <div id="current_venue">
         <h2 id="current_venue_name"></h2>
       </div>
       <div id="map_canvas"></div>
       <p id="current_venue_details"></p>
     </div>
- 
-    <select id="mode" onchange="myApp.navigation.calcRoute(null);">
-      <option value="TRANSIT">Bus or subway >> I'm lazy!</option>
-      <option value="WALKING">I want to walk!</option>
-    </select>
+
 
 
       <fieldset class="ui-grid-a">
         <div class="ui-block-a"><button type="submit" id="change_location" data-theme="d" data-mini="true">More venues</button></div>
         <div class="ui-block-b"><button type="submit" id="invite_friends" data-theme="a" data-mini="true">Text your friends</button></div>
       </fieldset>    
+
       
       <div id="venues_wrapper">  
         <br><br>
@@ -82,11 +79,20 @@
         <div id="venues">
         </div>  
       </div>
+
+      <br>
+      <div class="containing-element">
+        <select id="mode"  name="flip-min" data-role="slider">
+          <option value="WALKING">Transit Off</option>
+          <option value="TRANSIT">Transit On</option>
+        </select>
+      </div>
+       
     </div>
 
     
     <div id="step2">
-      <h2>Text your friends</h2>
+      <!-- <h2>Text your friends</h2> -->
 
       <div id="friends">
         
@@ -136,14 +142,26 @@
 
 
     <div id="step3">
-      <h2>Go and order drinks!</h2>
+      <!-- <h2>Go and order drinks!</h2> -->
 
-       <p style="text-align: center"><img src="./images/beer-vector.png" style="height: 260px;" /></p>
+       <p style="text-align: center">
+        <a href="#">
+          <img src="./images/beer-vector.png" style="height: 260px;" />
+        </a>
+        </p>
 
+
+
+      <fieldset class="ui-grid-a">
+        <div class="ui-block-b"><button type="submit" id="show_route" data-theme="a" data-mini="true">Show me the route again!</button></div>
+      </fieldset>    
+
+
+       <?php /*
        Debug:
 
        <textarea id="debug" style="height: 300px;"></textarea> 
-
+  */ ?>
 
     </div>    
 

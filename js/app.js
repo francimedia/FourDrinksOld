@@ -46,6 +46,7 @@ var myApp = {
       if(typeof auth_token != 'undefined') {
         $('#login').hide();
         $('#step1').show();
+        $('#title').html('Want to get drinks here?');
         myApp.getUser();
         $.geolocation.get({win: myApp.locationSuccessCallback, fail: myApp.locationErrorCallback});
       }
@@ -133,7 +134,9 @@ var myApp = {
                 event.preventDefault();
 
                 $('#step2').fadeOut(100, function() {
+                  $('#title').html('Want to get drinks here?');
                   $('#step1').fadeIn();
+                  myApp.changeLocation();
                 });
               });
 
@@ -204,8 +207,10 @@ var myApp = {
               $('#invite_friends').click(function(event) {
                 event.preventDefault();
 
+                $('#title').html('Text your friends');
+
                 $('html, body').animate({
-                    scrollTop: $('#step1').offset().top
+                    scrollTop: 0
                 });   
 
                 $('#step1').fadeOut(100, function() {
@@ -215,16 +220,15 @@ var myApp = {
 
               $('#change_location').click(function(event) {
                 event.preventDefault();
-
-                $('#venues_wrapper').show();
-
-                $('html, body').animate({
-                    scrollTop: $('#change_location_headline').offset().top
-                });     
-              });
-
+                myApp.changeLocation();
+              }); 
               
-
+              $('#step3 a, #show_route').click(function(event) {
+                event.preventDefault();
+                $('#step3').fadeOut(100, function() {
+                  $('#step1').fadeIn();
+                });
+              }); 
 
 
               myApp.getFriends();
@@ -235,6 +239,14 @@ var myApp = {
 
    
     },    
+
+    changeLocation: function() {
+        $('#venues_wrapper').show();
+
+        $('html, body').animate({
+            scrollTop: $('#change_location_headline').offset().top
+        });  
+    },
 
     sendMessages: function() {
         
@@ -270,6 +282,8 @@ var myApp = {
                   scrollTop: $('#step2').offset().top
               }); 
 
+              $('#title').html('Go and order drinks!');
+
               $('#step2').fadeOut(100, function() {
                 $('#step3').fadeIn();
               });
@@ -278,12 +292,6 @@ var myApp = {
 
             },
             error: function() { 
-
-
-              $('#step2').fadeOut(100, function() {
-                $('#step3').fadeIn();
-              });
-
               console.log('Failed!'); 
             }
         });
