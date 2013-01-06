@@ -54,8 +54,8 @@ if(!isset($_REQUEST['friends'])) {
 		$message = "Hey $name, let's meet at - ".$venue_name."! " . $venue_url;
 		$messages[$numbers[$key]] = $message;
 
-		$numbers[$key] = "+16467251124";
-		
+		// $numbers[$key] = "+16467251124";
+
 		$sms = $client->account->sms_messages->create(
 
 		// Step 6: Change the 'From' number below to be a valid Twilio number 
