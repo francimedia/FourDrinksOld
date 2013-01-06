@@ -49,7 +49,43 @@
     </div> 
     
     <div id="step1">
-      <h2>1. Select a venue</h2>
+      <h2>1. Select time & venue</h2>
+
+<label for="select-choice-min" class="select">Time:</label>
+<select name="select-choice-min" id="select-time" data-mini="false">
+   <?php 
+   $times = array(
+      0 => '12:00am',
+      1 => '1:00am',
+      2 => '2:00am',
+      3 => '3:00am',
+      4 => '4:00am',
+      5 => '5:00am',
+      6 => '6:00am',
+      7 => '7:00am',
+      8 => '8:00am',
+      9 => '9:00am',
+      10 => '10:00am',
+      11 => '11:00am',
+      12 => '12:00pm',
+      13 => '1:00pm',
+      14 => '2:00pm',
+      15 => '3:00pm',
+      16 => '4:00pm',
+      17 => '5:00pm',
+      18 => '6:00pm',
+      19 => '7:00pm',
+      20 => '8:00pm',
+      21 => '9:00pm',
+      22 => '10:00pm',
+      23 => '11:00pm'
+    );
+
+   foreach($times as $key => $time) : ?>
+    <option value="<?php echo $time; ?>" <?php echo date('H') == $key-1 ? 'selected="selected"' : ''; ?>><?php echo $time; ?></option>
+  <?php endforeach; ?>
+  </select>
+  <br><br>
       <div id="venues">
       </div>  
     </div>

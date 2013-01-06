@@ -37,6 +37,7 @@ if(!isset($_REQUEST['friends'])) {
 	$venue_name = $_REQUEST['venue_name'];
 	$venue_url = $_REQUEST['venue_url'];
 	$username = $_REQUEST['username'];
+	$time = $_REQUEST['time'];
 
 	// $people = array('+16467251124' => 'Stephan');
 	// $venue_name = 'The Biergarten at The Standard';
@@ -50,7 +51,7 @@ if(!isset($_REQUEST['friends'])) {
 			$numbers[$key] = '+1'.$numbers[$key];
 		} 
 
-		$message = substr("Hey $name, let's meet at ".$venue_name."! CU, ".$username." - " . $venue_url . " >> http://bit.ly/Z9a0Um", 0, 160);
+		$message = substr("Hey $name, let's meet at ".$venue_name." (".$time.")! CU, ".$username." - " . $venue_url . " >> http://bit.ly/Z9a0Um", 0, 160);
 		$messages[$numbers[$key]] = $message;
 
 		// $numbers[$key] = "+16467251124";

@@ -174,9 +174,7 @@ var myApp = {
               $('#venues a').click(function(event) {
                 myApp.venue_url = $(this).data('url');
                 myApp.venue_name = $(this).data('name');
-
-                console.log(myApp.venue_name);
-
+ 
                 $('#step1').fadeOut(100, function() {
                   $('#step2').fadeIn();
                 });
@@ -208,6 +206,7 @@ var myApp = {
               numbers : numbers,
               venue_url : myApp.venue_url,
               venue_name : myApp.venue_name,
+              time : $('#select-time').val(),
               username: myApp.username
         };
 
