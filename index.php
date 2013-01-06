@@ -82,7 +82,7 @@
     );
 
    foreach($times as $key => $time) : ?>
-    <option value="<?php echo $time; ?>" <?php echo date('H') == $key-1 ? 'selected="selected"' : ''; ?>><?php echo $time; ?></option>
+    <option value="<?php echo $time; ?>" <?php echo $key == 20 ? 'selected="selected"' : ''; ?>><?php echo $time; ?></option>
   <?php endforeach; ?>
   </select>
   <br><br>
