@@ -14,9 +14,6 @@ var myApp = {
       if(typeof auth_token != 'undefined') {
         $('#login').hide();
         $('#step1').show();
-        $('#step2').show();
-
-
         $.geolocation.get({win: myApp.locationSuccessCallback, fail: myApp.locationErrorCallback});
       }
     },
@@ -47,7 +44,7 @@ var myApp = {
               tplData.friends = [];
 
               $.each(data.response.friends.items, function(key, val) {
-                // if(val.contact.phone != null) {
+                if(val.contact.phone != null) {
                   tplData.friends.push({
                     id: val.id,
                     username: val.firstName + " " + val.lastName,
@@ -56,7 +53,7 @@ var myApp = {
                     photo: val.photo,
                     phone: val.contact.phone
                   });
-                // }
+                }
               });
 
               tplData.friends.sort(function(a,b){

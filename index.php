@@ -17,6 +17,12 @@
   <script type="text/javascript">
     var baseUrl = 'http://<?php echo $_SERVER['HTTP_HOST']; ?>/';
   </script>
+
+  <style type="text/css">
+    .ui-header .ui-title, .ui-footer .ui-title {
+      margin: .6em 5% .8em;
+    }
+  </style>
 </head>
 
 <body>
