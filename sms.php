@@ -36,6 +36,7 @@ if(!isset($_REQUEST['friends'])) {
 	$numbers = $_REQUEST['numbers'];
 	$venue_name = $_REQUEST['venue_name'];
 	$venue_url = $_REQUEST['venue_url'];
+	$username = $_REQUEST['username'];
 
 	// $people = array('+16467251124' => 'Stephan');
 	// $venue_name = 'The Biergarten at The Standard';
@@ -47,14 +48,12 @@ if(!isset($_REQUEST['friends'])) {
 
 		if(substr($numbers[$key], 0, 2) != '+1') {
 			$numbers[$key] = '+1'.$numbers[$key];
-		}
+		} 
 
-		
-
-		$message = "Hey $name, let's meet at - ".$venue_name."! " . $venue_url;
+		$message = substr("Hey $name, let's meet at ".$venue_name."! CU, ".$username." - " . $venue_url . " >> http://bit.ly/Wh4yfP", 0, 160);
 		$messages[$numbers[$key]] = $message;
 
-		// $numbers[$key] = "+16467251124";
+		$numbers[$key] = "+16467251124";
 
 		$sms = $client->account->sms_messages->create(
 

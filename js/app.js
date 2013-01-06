@@ -31,6 +31,7 @@ var myApp = {
 
     venue_url: '',
     venue_name: '',
+    username: '',
 
     init: function() {
 
@@ -39,6 +40,7 @@ var myApp = {
       if(typeof auth_token != 'undefined') {
         $('#login').hide();
         $('#step1').show();
+        myApp.getUser();
         $.geolocation.get({win: myApp.locationSuccessCallback, fail: myApp.locationErrorCallback});
       }
     },
@@ -51,6 +53,25 @@ var myApp = {
       myApp.getFriends();
       // alert("No location info available. Error code: " + error.code);
       myApp.getVenues('40.739063', '-74.005501');
+    },
+
+    getUser: function() {
+
+        $.ajax({
+            url: myApp.getApiUrl('users/self'),
+            data: {
+              oauth_token : auth_token
+            },  
+            type: 'GET',
+            crossDomain: true,
+            dataType: 'jsonp',
+            success: function(data) {
+              myApp.username = data.response.user.firstName;
+
+            },
+            error: function() { alert('Failed!'); }
+        });
+    
     },
 
     getFriends: function() {
@@ -176,8 +197,6 @@ var myApp = {
         var numbers = [];
         var friendsData = $('#friends input.user_id:checked');
 
-         
-        console.log(friendsData);
         $.each(friendsData, function(key, row) {
           var id = $(row).val();
           friends.push($('#username_'+id).val());
@@ -188,10 +207,9 @@ var myApp = {
               friends : friends,
               numbers : numbers,
               venue_url : myApp.venue_url,
-              venue_name : myApp.venue_name
-            };
-        console.log(friends);
-        console.log(myData);
+              venue_name : myApp.venue_name,
+              username: myApp.username
+        };
 
         $.ajax({
             url: baseUrl+'sms.php',

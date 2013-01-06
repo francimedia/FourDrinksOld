@@ -76,8 +76,6 @@
 
        <p style="text-align: center"><img src="./images/beer-vector.png" style="height: 260px;" /></p>
 
-       <p><em>All text messages are sent to a test device, just imagine you would get a text message ... </em></p>
-
        Debug:
 
        <textarea id="debug" style="height: 300px;"></textarea> 
