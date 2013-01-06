@@ -265,6 +265,11 @@ var myApp = {
             dataType: 'JSON',
             success: function(data) { 
 
+
+              $('html, body').animate({
+                  scrollTop: $('#step2').offset().top
+              }); 
+
               $('#step2').fadeOut(100, function() {
                 $('#step3').fadeIn();
               });
