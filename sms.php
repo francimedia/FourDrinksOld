@@ -50,7 +50,7 @@ if(!isset($_REQUEST['friends'])) {
 			$numbers[$key] = '+1'.$numbers[$key];
 		} 
 
-		$message = substr("Hey $name, let's meet at ".$venue_name."! CU, ".$username." - " . $venue_url . " >> http://bit.ly/Wh4yfP", 0, 160);
+		$message = substr("Hey $name, let's meet at ".$venue_name."! CU, ".$username." - " . $venue_url . " >> http://bit.ly/Z9a0Um", 0, 160);
 		$messages[$numbers[$key]] = $message;
 
 		// $numbers[$key] = "+16467251124";
