@@ -187,7 +187,7 @@
   </div><!-- /content -->
 
 
-  <div data-role="footer" class="ui-bar">
+  <div data-role="footer" class="ui-bar" id="footer">
     <!-- <a href="#" data-role="button" data-icon="search">Arrange meeting</a> -->
     <a href="#" data-role="button" data-icon="star" id="share_location_button">Share my location</a>
   </div>

@@ -50,7 +50,7 @@ var myApp = {
 
       if(typeof auth_token != 'undefined') {
         $('#login').hide();
-        $('#step1').show();
+        $('#step1, #footer').show();
         $('#title').html('Want to get drinks here?');
         myApp.buttonEvents();
         myApp.getUser();
@@ -433,7 +433,12 @@ var myApp = {
 
       initialize: function() {
         myApp.navigation.directionsDisplay1 = new google.maps.DirectionsRenderer();
-        myApp.navigation.directionsDisplay2 = new google.maps.DirectionsRenderer();
+        myApp.navigation.directionsDisplay2 = new google.maps.DirectionsRenderer({
+          polylineOptions: new google.maps.Polyline({
+            strokeColor: '#333333',
+            strokeOpacity: 0.5
+          })
+        });
         var mapOptions = {
           center: new google.maps.LatLng(myApp.currentPosition.lat, myApp.currentPosition.lng),
           mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -456,10 +461,28 @@ var myApp = {
         myApp.navigation.map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
         myApp.navigation.directionsDisplay1.setMap(myApp.navigation.map);
         myApp.navigation.directionsDisplay2.setMap(myApp.navigation.map);
+        myApp.navigation.directionsDisplay1.setOptions( { suppressMarkers: true } );
+        myApp.navigation.directionsDisplay2.setOptions( { suppressMarkers: true } );
       },
+
+      venueMarker: null,
+      userMarker: null,
+      friendMarker: null,
 
       calcRoute: function(venue) { 
 
+        if(myApp.navigation.venueMarker) {
+          myApp.navigation.venueMarker.setMap(null);  
+        }
+        
+        if(myApp.navigation.userMarker) {
+          myApp.navigation.userMarker.setMap(null);
+        }
+
+        if(myApp.navigation.friendMarker) {
+          myApp.navigation.friendMarker.setMap(null);
+        }
+        
         if(venue == null) {
           venue = myApp.selectedVenue;
         }
@@ -477,17 +500,7 @@ var myApp = {
 
 
         var selectedMode = $('#mode').val();
-        var request = {
-            origin: new google.maps.LatLng(myApp.currentPosition.lat, myApp.currentPosition.lng),
-            destination: new google.maps.LatLng(venue.location.lat, venue.location.lng),
-            travelMode: google.maps.TravelMode[selectedMode]
-        };
 
-        myApp.navigation.directionsService.route(request, function(response, status) {
-          if (status == google.maps.DirectionsStatus.OK) {
-            myApp.navigation.directionsDisplay1.setDirections(response);
-          }
-        });
 
         if(ll != null) {
           var llArray = ll.split(',');
@@ -501,9 +514,42 @@ var myApp = {
           myApp.navigation.directionsService.route(request, function(response, status) {
             if (status == google.maps.DirectionsStatus.OK) {
               myApp.navigation.directionsDisplay2.setDirections(response);
+
+              myApp.navigation.friendMarker = new google.maps.Marker({
+                  position: new google.maps.LatLng(parseFloat(llArray[0]), parseFloat(llArray[1])),
+                  map: myApp.navigation.map,
+                  icon: baseUrl+'images/user_comment.png'
+              });            
+
             }
           });
         }
+
+
+        var request = {
+            origin: new google.maps.LatLng(myApp.currentPosition.lat, myApp.currentPosition.lng),
+            destination: new google.maps.LatLng(venue.location.lat, venue.location.lng),
+            travelMode: google.maps.TravelMode[selectedMode]
+        };
+
+        myApp.navigation.directionsService.route(request, function(response, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            myApp.navigation.directionsDisplay1.setDirections(response);
+
+            myApp.navigation.venueMarker = new google.maps.Marker({
+                position: new google.maps.LatLng(venue.location.lat, venue.location.lng),
+                map: myApp.navigation.map,
+                icon: (venue.categories[0].icon != null ? venue.categories[0].icon : baseUrl+'images/house.png')
+            });            
+
+            myApp.navigation.userMarker = new google.maps.Marker({
+                position: new google.maps.LatLng(myApp.currentPosition.lat, myApp.currentPosition.lng),
+                map: myApp.navigation.map,
+                icon: baseUrl+'images/user.png'
+            });            
+
+          }
+        });
 
       }
 
