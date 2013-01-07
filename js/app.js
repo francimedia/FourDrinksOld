@@ -36,6 +36,11 @@ var myApp = {
       lat: '40.739063',
       lng: '-74.005501'
     },
+    
+    searchPosition: {
+      lat: '40.739063',
+      lng: '-74.005501'
+    },
 
     init: function() {
 
@@ -47,8 +52,11 @@ var myApp = {
         $('#login').hide();
         $('#step1').show();
         $('#title').html('Want to get drinks here?');
+        myApp.buttonEvents();
         myApp.getUser();
-        $.geolocation.get({win: myApp.locationSuccessCallback, fail: myApp.locationErrorCallback});
+
+        $.geolocation.get({win: myApp.locationSuccessCallback, fail: myApp.locationErrorCallback});  
+        
       }
     },
 
@@ -57,12 +65,41 @@ var myApp = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
-      myApp.getVenues();
+
+      if(ll==null) {
+        myApp.searchPosition = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        myApp.getVenues();
+      } else {
+        myApp.checkMode();
+      }
+      
     },
 
     locationErrorCallback: function(error) {
       // alert("No location info available. Error code: " + error.code);
       myApp.getVenues();
+    },
+
+    buttonEvents: function() {
+
+      $('#share_location_button').click(function(event) {
+        event.preventDefault();
+        $('#title').html('Share my location');
+        // trash code..
+        $('#step1, #step2, #step3').fadeOut(100, function() {
+          $('#share_location_1').fadeIn();
+        });
+      });
+      
+      $('#share_location_submit').click(function(event) {
+        event.preventDefault();
+        myApp.shareLocation();
+      });
+
+       
     },
 
     getUser: function() {
@@ -124,7 +161,7 @@ var myApp = {
           
               var html    = template(tplData);
               
-              $('#friends').html(html).trigger('create');
+              $('#friends, #share_location_friends').html(html).trigger('create');
               $('#send_message').click(function(event) {
                 event.preventDefault();
                 myApp.sendMessages();
@@ -147,14 +184,42 @@ var myApp = {
    
     },
 
+    checkMode: function() {
+        if($('#search_mode').val() == 'default') {
+          myApp.meetAtTarget();
+        } else {
+          $.geolocation.get({win: myApp.meetInTheMiddleCallback, fail: myApp.locationErrorCallback});  
+        }
+    },
+    
+    meetAtTarget: function() {
+      var llArray = ll.split(',');
+      myApp.searchPosition = {
+          lat: parseFloat(llArray[0]),
+          lng: parseFloat(llArray[1])
+      };
+      myApp.getVenues();
+    },
+    
+    meetInTheMiddleCallback: function() {
+        var llArray = ll.split(',');
+        console.log(llArray);
+        myApp.searchPosition = {
+            lat: ((myApp.currentPosition.lat + parseFloat(llArray[0])) / 2),
+            lng: ((myApp.currentPosition.lng + parseFloat(llArray[1])) / 2)
+        };
 
+        console.log(myApp.searchPosition);
+        myApp.getVenues();
+    },
+    
     getVenues: function() {
 
         $.ajax({
             url: myApp.getApiUrl('venues/explore'),
             data: {
               oauth_token : auth_token,
-              ll : myApp.currentPosition.lat+','+myApp.currentPosition.lng,
+              ll : myApp.searchPosition.lat+','+myApp.searchPosition.lng,
               section : 'drinks',
               // limit : 10
             },  
@@ -288,7 +353,48 @@ var myApp = {
                 $('#step3').fadeIn();
               });
 
-              $('#debug').val($.stringify(data));
+              // $('#debug').val($.stringify(data));
+
+            },
+            error: function() { 
+              console.log('Failed!'); 
+            }
+        });
+
+   
+    },
+
+    shareLocation: function() {
+        $.geolocation.get({win: myApp._shareLocation, fail: myApp.locationErrorCallback});  
+    },
+
+    _shareLocation: function() {
+        var friends = [];
+        var numbers = [];
+        var friendsData = $('#share_location_friends input.user_id:checked');
+
+        $.each(friendsData, function(key, row) {
+          var id = $(row).val();
+          friends.push($('#username_'+id).val());
+          numbers.push($('#userphone_'+id).val());
+        });
+
+        var myData = {
+              friends : friends,
+              numbers : numbers,
+              lat : myApp.currentPosition.lat,
+              lng : myApp.currentPosition.lng
+        };
+
+        $.ajax({
+            url: baseUrl+'sms.php',
+            data: myData,  
+            type: 'POST',
+            crossDomain: true,
+            dataType: 'JSON',
+            success: function(data) { 
+
+
 
             },
             error: function() { 
@@ -326,7 +432,8 @@ var myApp = {
       map: null,
 
       initialize: function() {
-        myApp.navigation.directionsDisplay = new google.maps.DirectionsRenderer();
+        myApp.navigation.directionsDisplay1 = new google.maps.DirectionsRenderer();
+        myApp.navigation.directionsDisplay2 = new google.maps.DirectionsRenderer();
         var mapOptions = {
           center: new google.maps.LatLng(myApp.currentPosition.lat, myApp.currentPosition.lng),
           mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -347,8 +454,8 @@ var myApp = {
           ]
         }
         myApp.navigation.map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-        myApp.navigation.directionsDisplay.setMap(myApp.navigation.map);
-        
+        myApp.navigation.directionsDisplay1.setMap(myApp.navigation.map);
+        myApp.navigation.directionsDisplay2.setMap(myApp.navigation.map);
       },
 
       calcRoute: function(venue) { 
@@ -373,16 +480,31 @@ var myApp = {
         var request = {
             origin: new google.maps.LatLng(myApp.currentPosition.lat, myApp.currentPosition.lng),
             destination: new google.maps.LatLng(venue.location.lat, venue.location.lng),
-            // Note that Javascript allows us to access the constant
-            // using square brackets and a string value as its
-            // "property."
             travelMode: google.maps.TravelMode[selectedMode]
         };
+
         myApp.navigation.directionsService.route(request, function(response, status) {
           if (status == google.maps.DirectionsStatus.OK) {
-            myApp.navigation.directionsDisplay.setDirections(response);
+            myApp.navigation.directionsDisplay1.setDirections(response);
           }
         });
+
+        if(ll != null) {
+          var llArray = ll.split(',');
+
+          var request = {
+              origin: new google.maps.LatLng(parseFloat(llArray[0]), parseFloat(llArray[1])),
+              destination: new google.maps.LatLng(venue.location.lat, venue.location.lng),
+              travelMode: google.maps.TravelMode[selectedMode]
+          };
+
+          myApp.navigation.directionsService.route(request, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+              myApp.navigation.directionsDisplay2.setDirections(response);
+            }
+          });
+        }
+
       }
 
     }

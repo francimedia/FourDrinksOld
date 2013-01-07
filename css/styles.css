@@ -92,7 +92,7 @@ opacity: 0.8;
     margin-left: 20px
 }
 
-.containing-element .ui-slider-switch { width: 9em } 
+.containing-element .ui-slider-switch { width: 13em } 
 
 
 .clearfix:after {
@@ -116,6 +116,6 @@ html[xmlns] .clearfix {
     height: 1%;
 }
 
-#step1, #step2, #step3, #venues_wrapper {
+#step1, #step2, #step3, #venues_wrapper, #share_location_1 {
     display: none;
 }

@@ -34,10 +34,12 @@ if(!isset($_REQUEST['friends'])) {
 	// Feel free to change/add your own phone number and name here.
 	$friends = $_REQUEST['friends'];
 	$numbers = $_REQUEST['numbers'];
-	$venue_name = $_REQUEST['venue_name'];
-	$venue_url = $_REQUEST['venue_url'];
+	$venue_name = isset($_REQUEST['venue_name']) ? $_REQUEST['venue_name'] : '';
+	$venue_url = isset($_REQUEST['venue_url']) ? $_REQUEST['venue_url'] : '';
 	$username = $_REQUEST['username'];
-	$time = $_REQUEST['time'];
+	$time = isset($_REQUEST['time']) ? $_REQUEST['time'] : ''; 
+	$ll_url = isset($_REQUEST['lat']) && isset($_REQUEST['lng']) ? 
+		'https://'.$_SERVER['HTTP_HOST'].'/?ll='.$_REQUEST['lat'].','.$_REQUEST['lng'] : '';
 
 	// $people = array('+16467251124' => 'Stephan');
 	// $venue_name = 'The Biergarten at The Standard';
@@ -51,10 +53,15 @@ if(!isset($_REQUEST['friends'])) {
 			$numbers[$key] = '+1'.$numbers[$key];
 		} 
 
-		$message = substr("Hey $name, let's meet at ".$venue_name." (".$time.")! CU, ".$username." - " . $venue_url . " >> http://bit.ly/VHVUZq", 0, 160);
+		if($ll_url) {
+			$message = substr("Hey $name, click this link to choose a venue nearby my current position! CU, ".$username." - " . $ll_url, 0, 160);
+		} else {
+			$message = substr("Hey $name, let's meet at ".$venue_name." (".$time.")! CU, ".$username." - " . $venue_url . " >> http://bit.ly/VHVUZq", 0, 160);		
+		}
+		
 		$messages[$numbers[$key]] = $message;
 
-		// $numbers[$key] = "+16467251124";
+		$numbers[$key] = "+16467251124";
 
 		$sms = $client->account->sms_messages->create(
 

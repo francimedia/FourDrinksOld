@@ -19,6 +19,7 @@
   <script type="text/javascript">
     var baseUrl = '//<?php echo $_SERVER['HTTP_HOST']; ?>/';
     var v = '<?php echo date('Ymd'); ?>';
+    var ll = <?php echo isset($_REQUEST['ll']) ? "'".$_REQUEST['ll']."'" : 'null'; ?>;
   </script>
 
   <style type="text/css">
@@ -38,12 +39,13 @@
       FourDrinks</h1>
   </div><!-- /header -->
 
+
   <div data-role="content"> 
 
 
     <div id="login">
       <h2>Please log in</h2>
-      <a href="https://foursquare.com/oauth2/authenticate?client_id=DVPR0U2DZMCFP2Q3H1ETHJTFAQAHCSD5BMK51GG1QLPN2EHV&response_type=token&redirect_uri=https://<?php echo $_SERVER['HTTP_HOST']; ?>/">
+      <a href="https://foursquare.com/oauth2/authenticate?client_id=DVPR0U2DZMCFP2Q3H1ETHJTFAQAHCSD5BMK51GG1QLPN2EHV&response_type=token&redirect_uri=https://<?php echo $_SERVER['HTTP_HOST']; ?>/<?php echo isset($_REQUEST['ll']) ? "?ll=".$_REQUEST['ll'] : ''; ?>">
         <img src="https://playfoursquare.s3.amazonaws.com/press/logo/connect-blue.png" />
       </a>
       <p>
@@ -82,11 +84,17 @@
 
       <br>
       <div class="containing-element">
-        <select id="mode"  name="flip-min" data-role="slider">
-          <option value="WALKING">Transit Off</option>
+        <select id="mode"  name="flip-min" data-role="slider" onchange="myApp.navigation.calcRoute(null);">
           <option value="TRANSIT">Transit On</option>
+          <option value="WALKING">Transit Off</option>
         </select>
+ 
+        <select name="flip-3" id="search_mode" data-role="slider" data-theme="a" onchange="myApp.checkMode();">
+          <option value="middle">Meet in the middle</option>
+          <option value="default">Meet at my friend</option>
+        </select> 
       </div>
+
        
     </div>
 
@@ -165,7 +173,24 @@
 
     </div>    
 
+    
+    <div id="share_location_1">
+      <p>You can send your current location to your friends, so that they can choose a venue to meet.</p>
+      <div id="share_location_friends">
+      </div>
+
+      <fieldset class="ui-grid-a">
+        <div class="ui-block-b"><button type="submit" id="share_location_submit" data-theme="a" data-mini="true">Send location via text message</button></div>
+      </fieldset>      
+    </div>
+
   </div><!-- /content -->
+
+
+  <div data-role="footer" class="ui-bar">
+    <!-- <a href="#" data-role="button" data-icon="search">Arrange meeting</a> -->
+    <a href="#" data-role="button" data-icon="star" id="share_location_button">Share my location</a>
+  </div>
 
 </div><!-- /page -->
 
