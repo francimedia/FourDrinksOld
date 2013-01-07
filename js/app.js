@@ -73,6 +73,7 @@ var myApp = {
         };
         myApp.getVenues();
       } else {
+        $('#search_mode_wrapper').show();
         myApp.checkMode();
       }
       
@@ -482,7 +483,7 @@ var myApp = {
         if(myApp.navigation.friendMarker) {
           myApp.navigation.friendMarker.setMap(null);
         }
-        
+
         if(venue == null) {
           venue = myApp.selectedVenue;
         }

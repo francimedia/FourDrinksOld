@@ -88,11 +88,13 @@
           <option value="WALKING">Transit Off</option>
           <option value="TRANSIT">Transit On</option>
         </select>
- 
-        <select name="flip-3" id="search_mode" data-role="slider" data-theme="a" onchange="myApp.checkMode();">
-          <option value="middle">Meet in the middle</option>
-          <option value="default">Meet at my friend</option>
-        </select> 
+   
+        <div id="search_mode_wrapper">
+          <select name="flip-3" id="search_mode" data-role="slider" data-theme="a" onchange="myApp.checkMode();">
+            <option value="middle">Meet in the middle</option>
+            <option value="default">Meet at my friend</option>
+          </select> 
+        </div>
       </div>
 
        
