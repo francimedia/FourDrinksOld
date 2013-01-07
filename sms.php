@@ -61,7 +61,7 @@ if(!isset($_REQUEST['friends'])) {
 		
 		$messages[$numbers[$key]] = $message;
 
-		$numbers[$key] = "+16467251124";
+		// $numbers[$key] = "+16467251124";
 
 		$sms = $client->account->sms_messages->create(
 
