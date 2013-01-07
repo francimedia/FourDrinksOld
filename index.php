@@ -45,7 +45,7 @@
 
     <div id="login">
       <h2>Please log in</h2>
-      <a href="https://foursquare.com/oauth2/authenticate?client_id=DVPR0U2DZMCFP2Q3H1ETHJTFAQAHCSD5BMK51GG1QLPN2EHV&response_type=token&redirect_uri=https://<?php echo $_SERVER['HTTP_HOST']; ?>/<?php echo isset($_REQUEST['ll']) ? "?ll=".$_REQUEST['ll'] : ''; ?>">
+      <a href="https://foursquare.com/oauth2/authenticate?client_id=DVPR0U2DZMCFP2Q3H1ETHJTFAQAHCSD5BMK51GG1QLPN2EHV&response_type=token&redirect_uri=<?php echo urlencode('https://'.$_SERVER['HTTP_HOST'].'/'. ( isset($_REQUEST['ll']) ? "?ll=".$_REQUEST['ll'] : '')); ?>">
         <img src="https://playfoursquare.s3.amazonaws.com/press/logo/connect-blue.png" />
       </a>
       <p>
@@ -85,8 +85,8 @@
       <br>
       <div class="containing-element">
         <select id="mode"  name="flip-min" data-role="slider" onchange="myApp.navigation.calcRoute(null);">
-          <option value="TRANSIT">Transit On</option>
           <option value="WALKING">Transit Off</option>
+          <option value="TRANSIT">Transit On</option>
         </select>
  
         <select name="flip-3" id="search_mode" data-role="slider" data-theme="a" onchange="myApp.checkMode();">
